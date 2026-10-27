@@ -49,4 +49,16 @@ public class Table {
         }
         rows[rowCount++] = row;
     }
+    //Заготовка для будущей процедуры вывода данных таблицы - printQueryResult
+    private void printLine(String[] values, int count, int[] widths) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            String v = values[i];
+            if (v.length() > widths[i]) v = v.substring(0, widths[i] - 1) + "…";
+            sb.append(v);
+            for (int s = v.length(); s < widths[i]; s++) sb.append(' ');
+            if (i < count - 1) sb.append(" | ");
+        }
+        System.out.println(sb);
+    }
 }
