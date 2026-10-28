@@ -49,7 +49,7 @@ public class Table {
         }
         rows[rowCount++] = row;
     }
-    //Заготовка для будущей процедуры вывода данных таблицы - printQueryResult
+
     private void printLine(String[] values, int count, int[] widths) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
@@ -60,5 +60,27 @@ public class Table {
             if (i < count - 1) sb.append(" | ");
         }
         System.out.println(sb);
+    }
+
+    private void printSeparator(int[] widths) {
+        //пока в процессе реализации    
+    }
+
+    public void printQueryResult() {
+        if (columnCount == 0) {
+            System.out.println("(в таблице нет столбцов)");
+            return;
+        }
+        int[] widths = computeWidths();
+        printLine(columns, columnCount, widths);
+        if (rowCount == 0) {
+            System.out.println("(строк нет)");
+            return;
+        };
+        
+        //printSeparator(widths);
+        for (int r = 0; r < rowCount; r++) {
+            printLine(rows[r], columnCount, widths);
+        }
     }
 }
