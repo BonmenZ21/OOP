@@ -39,5 +39,8 @@ public class Main {
             System.out.println("Столбцов нет — строки не вводятся.");
         }
 
+        System.out.println("\n=== Состав таблицы \"" + table.getName() + "\" ===");
+        table.printQueryResult();
+
     }
 }
