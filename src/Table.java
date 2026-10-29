@@ -2,7 +2,7 @@
 
 public class Table {
 
-    private static final int MAX_COLUMNS = 10;
+    private static final int MAX_COLUMNS = 20;
     private static final int MAX_ROWS    = 100;
 
     private final String name;
@@ -61,9 +61,28 @@ public class Table {
         }
         System.out.println(sb);
     }
-
+    
+    private int[] computeWidths() {
+        int[] widths = new int[columnCount];
+        for (int i = 0; i < columnCount; i++) widths[i] = columns[i].length();
+        for (int r = 0; r < rowCount; r++) {
+            for (int c = 0; c < columnCount; c++) {
+                if (rows[r][c].length() > widths[c]) widths[c] = rows[r][c].length();
+            }
+        }
+        for (int i = 0; i < columnCount; i++) {
+            if (widths[i] > 30) widths[i] = 30;
+        }
+        return widths;
+    }
+    
     private void printSeparator(int[] widths) {
-        //пока в процессе реализации    
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < widths.length; i++) {
+            for (int s = 0; s < widths[i]; s++) sb.append('-');
+            if (i < widths.length - 1) sb.append("-+-");
+        }
+        System.out.println(sb);
     }
 
     public void printQueryResult() {
@@ -78,7 +97,7 @@ public class Table {
             return;
         };
         
-        //printSeparator(widths);
+        printSeparator(widths);
         for (int r = 0; r < rowCount; r++) {
             printLine(rows[r], columnCount, widths);
         }
