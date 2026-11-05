@@ -102,4 +102,64 @@ public class Table {
             printLine(rows[r], columnCount, widths);
         }
     }
+
+    public int[][] findDuplicates() {
+        if (rowCount == 0) {
+            System.out.println("(строк нет)");
+            return new int[0][];
+        }
+        boolean[] used = new boolean[rowCount];
+        int[][] groups = new int[rowCount][];
+        int groupCount = 0;
+        for (int i = 0; i < rowCount; i++) {
+            if (used[i]) {
+                continue;
+            }
+            int[] members = new int[rowCount];
+            int count = 0;
+            for (int j = i; j < rowCount; j++) {
+                if (used[j]) {
+                    continue;
+                }
+                if (rowsEqual(rows[i], rows[j])) {
+                    members[count] = j;
+                    count++;
+                    used[j] = true;
+                }
+            }
+            if (count >= 2) {
+                int[] group = new int[count];
+                for (int k = 0; k < count; k++) {
+                    group[k] = members[k];
+                }
+                groups[groupCount] = group;
+                groupCount++;
+            }
+        }
+        if (groupCount == 0) {
+            System.out.println("Дублей не найдено.");
+            return new int[0][];
+        }
+        for (int g = 0; g < groupCount; g++) {
+            int[] group = groups[g];
+            System.out.println("Группа дублей #" + (g + 1) + " (" + group.length + " шт.):");
+            for (int k = 0; k < group.length; k++) {
+                int idx = group[k];
+                System.out.print("  строка #" + (idx + 1) + ": ");
+                for (int c = 0; c < columnCount; c++) {
+                    System.out.print(rows[idx][c]);
+                    if (c < columnCount - 1) {
+                        System.out.print(" | ");
+                    }
+                }
+                System.out.println();
+            }
+            System.out.println();
+        }
+        int[][] result = new int[groupCount][];
+        for (int g = 0; g < groupCount; g++) {
+            result[g] = groups[g];
+        }
+        return result;
+    }
 }
