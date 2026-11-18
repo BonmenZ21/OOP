@@ -1,0 +1,47 @@
+
+public class Column {
+
+    public enum Type { STRING, INTEGER, DOUBLE }
+
+    private final String name;
+    private final Type type;
+
+    public Column(String name, Type type) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("пустое имя столбца");
+        }
+        if (type == null) {
+            throw new IllegalArgumentException("не указан тип столбца");
+        }
+        this.name = name;
+        this.type = type;
+    }
+
+    public String getName() { return name; }
+    public Type getType()   { return type; }
+
+    public Object convert(Object value) {
+        if (value == null || value.toString().isBlank()) return null;
+
+        String text = value.toString().trim();
+        try {
+            switch (type) {
+                case STRING:
+                    return value.toString();
+                case INTEGER:
+                    return Integer.parseInt(text);
+                case DOUBLE:
+                    double number = Double.parseDouble(text);
+                    if (!Double.isFinite(number)) {
+                        throw new NumberFormatException("число не является конечным");
+                    }
+                    return number;
+                default:
+                    throw new IllegalStateException("неизвестный тип столбца");
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(
+                    "столбец '" + name + "': значение '" + value + "' не подходит для " + type);
+        }
+    }
+}
